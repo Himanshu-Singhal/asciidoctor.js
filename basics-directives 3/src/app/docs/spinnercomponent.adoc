@@ -1,0 +1,51 @@
+Spinners Angular - NGRX Recipe
+------------------------------
+Basics
+~~~~~~
+
+
+
+
+
+* Include Spinner in HTML component.
+* Show / Hide Spinner based on :
+. NGRX "pending" state updated in Reducer
+. Using CSS class
+
+Dependencies
+~~~~~~~~~~~~
+* NGRX
+
+
+Highlights
+~~~~~~~~~~
+* Can achieve localized spinners in this way (Not take over)
+
+TIP: For localized spinners you often need a common store for other components to turn off your spinner.
+
+
+
+Details
+~~~~~~~
+
+* Code listings:
+. HTML
++
+[source,HTML]
+-----------------
+<div *ngIf="!(pending$ | async) && !(error$ | async)">
+  // Place the success code here if you do not want to show this while spinning
+</div>
+<capco-spinner [pending$]="pending$" data-size="small, medium or large"></capco-spinner>
+-----------------
+. CSS
+
+. View Component:
++
+[source,TYPESCRIPT]
+-----------------
+/** Set the pending$ observable **/
+
+public accountApplicationPending$: Observable<Boolean>;
+
+-----------------

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Error Handling -NGRX Recipe</title>
+<link rel="stylesheet" href="../../../../../asciidoctor.css">
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_error_handling_ngrx_recipe">Error Handling -NGRX Recipe</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_basics">Basics</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Include the error tag in HTML component</p>
+</li>
+<li>
+<p>Show / Hide the error based on:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>NGRX "error" state updated in Reducer</p>
+</li>
+<li>
+<p>Using CSS class</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependencies">Dependencies</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>NGRX</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_highlights">Highlights</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Can achieve localized errors in this way (Not take over)</p>
+</li>
+<li>
+<p>NOTE: For localized errors you often need a common store for other components to turn off your error.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_details">Details</h3>
+<div class="sect3">
+<h4 id="_html">HTML :</h4>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;div *ngIf="!(pending$ | async) &amp;&amp; !(error$ | async)"&gt;
+  // Place the success code here if you don't want to show this when there is an error
+&lt;/div&gt;
+
+&lt;app-error type='alert' [error$]="storeErrorState$" [rertyLastAction]="true"&gt;&lt;/app-error&gt;</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_css_error">CSS: Error</h3>
+<div class="sect3">
+<h4 id="_component_level">Component level :</h4>
+<div class="literalblock">
+<div class="content">
+<pre>https://capco-canvas.atlassian.net/wiki/spaces/WEB/pages/153157757/Error+-+component+level</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_view_component">View Component:</h3>
+<div class="listingblock">
+<div class="content">
+<pre>/** Set the storeErrorState$ observable to monitor the error state **/
+
+public storeErrorState$: Observable&lt;UxError&gt; = null;
+
+constructor(private accountApplicationStoreService: AccountApplicationStoreService) {}
+
+ngOnInit() {
+    this.storeErrorState$ = this.accountApplicationStoreService.getQuickActionsError();
+}</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ngrx">NGRX:</h3>
+<div class="sect3">
+<h4 id="_action">Action</h4>
+<div class="listingblock">
+<div class="content">
+<pre>import { Action } from "@ngrx/store";
+
+export enum AccountApplicationActionTypes {
+  SUBMIT_ACCOUNT_APPLICATION = '[Account Application] Submit',
+  SUCCESS_ACCOUNT_APPLICATION = '[Account Application] Success Response',
+  FAILURE_ACCOUNT_APPLICATION = '[Account Application] Failure Response'
+}
+
+export class SubmitAccountApplicationAction implements Action {
+  readonly type = AccountApplicationActionTypes.SUBMIT_ACCOUNT_APPLICATION;
+
+  constructor(public payload?: any) {
+  }
+}
+
+export class SuccessAccountApplicationgResponseAction implements Action {
+  readonly type = AccountApplicationActionTypes.SUCCESS_ACCOUNT_APPLICATION;
+
+  constructor(public payload: any) {
+  }
+}
+
+export class FailureAccountApplicationResponseAction implements Action {
+  readonly type = AccountApplicationActionTypes.FAILURE_ACCOUNT_APPLICATION;
+
+  constructor(public payload?: any) {
+  }
+}
+
+export type Actions
+  = SubmitAccountApplicationAction
+  | SuccessAccountApplicationgResponseAction
+  | FailureAccountApplicationResponseAction;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reducer">Reducer</h4>
+<div class="listingblock">
+<div class="content">
+<pre>/** The error flag have to be added to the reducer **/
+
+import { AccountApplicationActionTypes, Action as Actions } from '../actions/apliacation-action';
+
+export interface AccountApplicationInitialState {
+  data: AccountApplicationInterface;
+  pending: boolean;
+  error: UxError; // &lt;------------------------
+}
+
+export const initialState: AccountApplicationInitialState = {
+  data: null,
+  pending: false,
+  error: null // &lt;------------------------
+};
+
+export function reducer(state = initialState, action: Actions): AccountApplicationInitialState {
+  switch (action.type) {
+    case AccountApplicationActionTypes.SUCCESS_ACCOUNT_APPLICATION: {
+      const newState = Object.assign({}, state, &lt;AccountApplicationInitialState&gt;{
+        data: initialState.data,
+        pending: false,
+        error: null // &lt;------------------------
+      });
+      return newState;
+    }
+    case AccountApplicationActionTypes.FAILURE_ACCOUNT_APPLICATION: {
+      const newState = Object.assign({}, state, &lt;AccountApplicationInitialState&gt;{
+        data: initialState.data,
+        pending: false,
+        error: action.payload // &lt;------------------------
+      });
+      return newState;
+    }
+    case AccountApplicationActionTypes.SUBMIT_ACCOUNT_APPLICATION: {
+      const newState = Object.assign({}, state, &lt;AccountApplicationInitialState&gt;{
+        data: action.payload,
+        pending: true,
+        error: null // &lt;------------------------
+      });
+      return newState;
+    }
+    default: {
+      return state;
+    }
+  }
+}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2019-02-10 19:59:54 -0500
+</div>
+</div>
+</body>
+</html>

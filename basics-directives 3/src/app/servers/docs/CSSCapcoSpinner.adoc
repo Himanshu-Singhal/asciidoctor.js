@@ -1,0 +1,40 @@
+*This small spinner is using the Angular Material spinner as a base.*
+--------------------------------------------------------------------
+
+NOTE: "!important" rules in SCSS were used due to an issue with Angular inserting <style> tags into the <head> section of the page after the linked UI framework CSS file. Once this is resolved "!important" should be able to be removed.
+
+HTML
+~~~
+-------------
+Sizes are "small" (25x25px), "medium" (50x50px), "large" (100x100px) are available by adding attributes data-size="small", data-size="medium", data-size="large"
+
+If not attribute is specified the default is the "medium" size.
+-------------
+
+Angular Template
+~~~~~~~~~~~~~~~
+-------------
+
+-------------
+Implemented - Small
+^^^^^^^^^^^^^^^^^^^
+-------------
+<capco-spinner data-size="small"></capco-spinner>
+-------------
+Implemented - Medium
+^^^^^^^^^^^^^^^^^^^
+-------------
+<capco-spinner data-size="medium"></capco-spinner>
+-------------
+Implemented - Small
+^^^^^^^^^^^^^^^^^^^
+-------------
+<capco-spinner data-size="large"></capco-spinner>
+-------------
+
+SCSS
+~~~~
+* The first section uses theme variables to modify the Angular Material spinner.
+
+* The following is also using BEM mixins for blocks and modifiers.
+-------------

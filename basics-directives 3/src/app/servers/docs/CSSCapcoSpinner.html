@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>This small spinner is using the Angular Material spinner as a base.</title>
+<link rel="stylesheet" href="../../../../asciidoctor.css">
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_this_small_spinner_is_using_the_angular_material_spinner_as_a_base"><strong>This small spinner is using the Angular Material spinner as a base.</strong></h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+"!important" rules in SCSS were used due to an issue with Angular inserting &lt;style&gt; tags into the &lt;head&gt; section of the page after the linked UI framework CSS file. Once this is resolved "!important" should be able to be removed.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_html">HTML</h3>
+<div class="listingblock">
+<div class="content">
+<pre>Sizes are "small" (25x25px), "medium" (50x50px), "large" (100x100px) are available by adding attributes data-size="small", data-size="medium", data-size="large"
+
+If not attribute is specified the default is the "medium" size.</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_angular_template">Angular Template</h3>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;div class="c-spinner" *ngIf="(pending$ | async)"&gt;
+  &lt;mat-spinner class="c-spinner__body"&gt;&lt;/mat-spinner&gt;
+&lt;/div&gt;</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implemented_small">Implemented - Small</h4>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;capco-spinner data-size="small"&gt;&lt;/capco-spinner&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implemented_medium">Implemented - Medium</h4>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;capco-spinner data-size="medium"&gt;&lt;/capco-spinner&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implemented_small_2">Implemented - Small</h4>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;capco-spinner data-size="large"&gt;&lt;/capco-spinner&gt;</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scss">SCSS</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>The first section uses theme variables to modify the Angular Material spinner.</p>
+</li>
+<li>
+<p>The following is also using BEM mixins for blocks and modifiers.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>.mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: $color-primary;
+}
+
+.mat-progress-spinner.mat-accent circle,
+.mat-spinner.mat-accent circle {
+    stroke: $color-secondary;
+}
+
+.mat-progress-spinner.mat-warn circle,
+.mat-spinner.mat-warn circle {
+    stroke: $color-error;
+}
+
+.c-spinner {
+  display: flex;
+  min-height: 30vh;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  width: 100%;
+
+  .ie11 &amp; {
+    position: relative;
+  }
+
+  @include element("body"){
+    .ie11 &amp; {
+      @include center;
+    }
+
+    width: 50px !important;
+    height: 50px !important;
+
+    svg {
+      width: 50px !important;
+      height: 50px !important;
+    }
+
+    [data-size="medium"] &amp; {
+      width: 50px !important;
+      height: 50px !important;
+
+      svg {
+        width: 50px !important;
+        height: 50px !important;
+      }
+    }
+
+    [data-size="large"] &amp; {
+      width: 100px !important;
+      height: 100px !important;
+
+      svg {
+        width: 100px !important;
+        height: 100px !important;
+      }
+    }
+
+    [data-size="small"] &amp; {
+      width: 25px !important;
+      height: 25px !important;
+
+      svg {
+        width: 25px !important;
+        height: 25px !important;
+      }
+    }
+  }
+}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2019-02-10 20:00:12 -0500
+</div>
+</div>
+</body>
+</html>

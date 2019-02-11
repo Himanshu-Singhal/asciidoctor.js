@@ -1,0 +1,58 @@
+Error Handling -NGRX Recipe
+--------------------------
+
+Basics
+~~~~~~
+* Include the error tag in HTML component
+* Show / Hide the error based on:
+** NGRX "error" state updated in Reducer
+** Using CSS class
+
+Dependencies
+~~~~~~~~~~~~
+* NGRX
+
+Highlights
+~~~~~~~~~~
+* Can achieve localized errors in this way (Not take over)
+* NOTE: For localized errors you often need a common store for other components to turn off your error.
+
+Details
+~~~~~~
+HTML :
+^^^^^^
+
+----------------
+  // Place the success code here if you don't want to show this when there is an error
+</div>
+
+----------------
+
+
+CSS: Error
+~~~~~~~~~~
+
+Component level :
+^^^^^^^^^^^^^^^^^
+
+View Component:
+~~~~~~~~~~~~~~
+----------------
+
+/** Set the storeErrorState$ observable to monitor the error state **/
+
+public storeErrorState$: Observable<UxError> = null;
+
+constructor(private accountApplicationStoreService: AccountApplicationStoreService) {}
+
+ngOnInit() {
+    this.storeErrorState$ = this.accountApplicationStoreService.getQuickActionsError();
+}
+
+----------------
+
+NGRX:
+~~~~~
+Action
+^^^^^^
+----------------
